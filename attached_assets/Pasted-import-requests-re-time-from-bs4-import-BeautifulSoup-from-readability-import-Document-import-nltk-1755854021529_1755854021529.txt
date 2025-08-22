@@ -90,5 +90,5 @@ def answer_question(query):
 
 if __name__ == "__main__":
     # उदाहरण: तुमचा प्रश्न इथे द्या
-    q = "Ask me a question"
+    q = "Airtel dongle मध्ये WPS म्हणजे काय आणि ते off ठेवणे सुरक्षित आहे का?"
     print(answer_question(q))
