@@ -1,0 +1,94 @@
+import requests, re, time
+from bs4 import BeautifulSoup
+from readability import Document
+import nltk
+from nltk.tokenize import sent_tokenize
+from collections import Counter
+nltk.download('punkt', quiet=True)
+
+# --- Utility: साधं clean ---
+def clean_text(t):
+    t = re.sub(r'\s+', ' ', t).strip()
+    return t
+
+# --- Step 1: DuckDuckGo (lite) वर सर्च (API key नको) ---
+def search_duckduckgo(query, n=3):
+    url = "https://html.duckduckgo.com/html/"
+    r = requests.post(url, data={"q": query}, timeout=20, headers={"User-Agent":"Mozilla/5.0"})
+    r.raise_for_status()
+    soup = BeautifulSoup(r.text, "lxml")
+    links = []
+    for a in soup.select("a.result__a")[:n]:
+        href = a.get("href")
+        if href and href.startswith("http"):
+            links.append(href)
+    return links
+
+# --- Step 2: पेजमधून मुख्य मजकूर काढणे ---
+def extract_main_text(url):
+    r = requests.get(url, timeout=25, headers={"User-Agent":"Mozilla/5.0"})
+    r.raise_for_status()
+    doc = Document(r.text)
+    html = doc.summary(html_partial=True)
+    soup = BeautifulSoup(html, "lxml")
+    # paragraph text
+    text = " ".join(p.get_text(" ", strip=True) for p in soup.find_all(["p","li"]))
+    return clean_text(text)
+
+# --- Step 3: सोपी extractive summary (language-agnostic) ---
+def summarize(text, max_sentences=5):
+    sents = [s.strip() for s in sent_tokenize(text) if len(s.strip())>40]
+    if not sents:
+        return text[:400]
+
+    # शब्द-frequency (stopwords शिवाय खूप बेसिक)
+    words = re.findall(r'\w+', text.lower())
+    cnt = Counter(w for w in words if len(w) > 3)
+    # प्रत्येक वाक्याला स्कोर
+    scores = []
+    for s in sents:
+        w = re.findall(r'\w+', s.lower())
+        score = sum(cnt.get(x,0) for x in w) / (len(w)+1)
+        scores.append((score, s))
+    # टॉप वाक्ये क्रमाने
+    top = [s for _, s in sorted(scores, key=lambda x: x[0], reverse=True)[:max_sentences]]
+    # मूळ क्रम राखण्यासाठी:
+    top_in_order = [s for s in sents if s in top][:max_sentences]
+    return " ".join(top_in_order)
+
+# --- Step 4: मुख्य फंक्शन: इंटरनेटवरून उत्तर शोधून मराठीत साधं सांगणे ---
+def answer_question(query):
+    print(f":mag_right: शोध: {query}")
+    links = search_duckduckgo(query, n=3)
+    if not links:
+        return "क्षमस्व, काही परिणाम सापडले नाहीत."
+
+    gathered = []
+    for i, url in enumerate(links, 1):
+        try:
+            print(f"→ स्रोत {i}: {url}")
+            txt = extract_main_text(url)
+            if len(txt) > 500:
+                gathered.append(txt)
+            time.sleep(1)  # सभ्य राहण्यासाठी थोडा थांबा
+        except Exception as e:
+            print(f"   (स्किप: {e})")
+
+    if not gathered:
+        return "परिणाम मिळाले, पण सारांशासाठी पुरेसा मजकूर मिळाला नाही."
+
+    big = " ".join(gathered)
+    sumy = summarize(big, max_sentences=5)
+
+    # थोडं मराठी फ्रेमिंग
+    reply = (
+        "## साधं उत्तर (वेब सारांश)\n"
+        + sumy
+        + "\n\n— हा सारांश टॉप वेब स्रोतांवरून घेतलेल्या माहितीस आधारलेला आहे."
+    )
+    return reply
+
+if __name__ == "__main__":
+    # उदाहरण: तुमचा प्रश्न इथे द्या
+    q = "Airtel dongle मध्ये WPS म्हणजे काय आणि ते off ठेवणे सुरक्षित आहे का?"
+    print(answer_question(q))
