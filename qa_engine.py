@@ -1,6 +1,6 @@
 import requests, re, time
 from bs4 import BeautifulSoup
-from readability import Document
+from readability.readability import Document
 import nltk
 from nltk.tokenize import sent_tokenize
 from collections import Counter
@@ -31,7 +31,7 @@ def search_duckduckgo(query, n=3):
         links = []
         for a in soup.select("a.result__a")[:n]:
             href = a.get("href")
-            if href and href.startswith("http"):
+            if href and str(href).startswith("http"):
                 links.append(href)
         return links
     except Exception as e:
