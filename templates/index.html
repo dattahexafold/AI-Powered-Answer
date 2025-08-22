@@ -9,19 +9,361 @@
     <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-bg: #0f0f23;
+            --card-bg: #1a1a2e;
+            --card-hover: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8bcc8;
+            --border-color: #2a2d47;
+            --shadow-dark: 0 10px 40px rgba(0,0,0,0.4);
+            --shadow-light: 0 5px 25px rgba(0,0,0,0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 90%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+        }
+
+        .container-fluid {
+            background: none !important;
+        }
+
+        /* Header Styles - Matching Previous Design */
+        header {
+            background: transparent !important;
+            border: none !important;
+            padding: 2rem 0 !important;
+        }
+
+        .header-content {
+            background: var(--primary-gradient);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-dark);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            to { transform: translateX(100%); }
+        }
+
+        .header-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        /* Card Styles - Matching Previous Design */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-gradient);
+        }
+
+        .card:hover {
+            background: var(--card-hover);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* Form Styles - Matching Previous Design */
+        .form-control {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-control:focus {
+            background: rgba(255,255,255,0.08);
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            color: var(--text-primary);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .form-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Button Styles - Matching Previous Design */
+        .btn {
+            border-radius: 15px;
+            padding: 0.875rem 2rem;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-gradient);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-outline-secondary {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-primary);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-outline-secondary:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Loading Animation - Matching Previous Design */
+        .loading-card {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .loading-icon {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(102, 126, 234, 0.2);
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Alert Styles - Matching Previous Design */
+        .alert {
+            border-radius: 15px;
+            border: none;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2) 0%, rgba(0, 242, 254, 0.2) 100%);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            color: #4facfe;
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, rgba(245, 87, 108, 0.2) 0%, rgba(240, 147, 251, 0.2) 100%);
+            border: 1px solid rgba(245, 87, 108, 0.3);
+            color: #f5576c;
+        }
+
+        /* Answer Section - Matching Previous Design */
+        .card-header {
+            background: rgba(255,255,255,0.05);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            border-radius: 20px 20px 0 0;
+        }
+
+        #answerContent {
+            background: rgba(255,255,255,0.02);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            margin-top: 1rem;
+            line-height: 1.8;
+        }
+
+        /* Footer - Matching Previous Design */
+        footer {
+            margin-top: 4rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        /* Animations - Matching Previous Design */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Question Display - Matching Previous Design */
+        .question-display {
+            background: var(--success-gradient);
+            color: white;
+            border: none;
+            font-weight: 500;
+        }
+
+        /* Icon Animations - Matching Previous Design */
+        .icon-bounce {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Utility Classes - Matching Previous Design */
+        .text-gradient {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Responsive Design - Matching Previous Design */
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 2rem;
+            }
+            
+            .card-body {
+                padding: 1.5rem;
+            }
+            
+            .btn {
+                padding: 0.75rem 1.5rem;
+            }
+        }
+
+        /* Override the old styles to match new design */
+        header,
+        .d-flex {
+          background: var(--primary-gradient) !important;
+          background-image: none !important;
+        }
+    </style>
+      
 </head>
+
 <body>
     <div class="container-fluid">
         <!-- Header -->
         <header class="py-4 mb-4 border-bottom">
             <div class="container">
-                <div class="d-flex align-items-center">
-                    <i class="bi bi-search-heart fs-2 text-primary me-3"></i>
-                    <div>
-                        <h1 class="h3 mb-0">प्रश्न-उत्तर सेवा</h1>
-                        <p class="text-muted mb-0">वेब सर्चवर आधारित बुद्धिमान उत्तरे</p>
+                <div class="header-content fade-in-up">
+                    <div class="d-flex align-items-center">
+                        <div class="header-icon me-4">
+                            <i class="bi bi-search-heart fs-1 icon-bounce"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h1 class="header-title">प्रश्न-उत्तर सेवा</h1>
+                            <p class="header-subtitle">वेब सर्चवर आधारित बुद्धिमान उत्तरे • AI-Powered Intelligent Answers</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -33,32 +375,35 @@
                 <div class="col-lg-8 col-xl-7">
                     
                     <!-- Question Input Section -->
-                    <div class="card shadow-sm mb-4">
+                    <div class="card shadow-sm mb-4 fade-in-up">
                         <div class="card-body p-4">
-                            <h2 class="card-title h5 mb-3">
+                            <h2 class="card-title h4 mb-4 text-gradient">
                                 <i class="bi bi-question-circle me-2"></i>
                                 तुमचा प्रश्न विचारा
                             </h2>
                             
                             <form id="questionForm">
                                 <div class="mb-3">
-                                    <label for="questionInput" class="form-label">प्रश्न:</label>
+                                    <label for="questionInput" class="form-label">
+                                        <i class="bi bi-chat-text me-2"></i>प्रश्न:
+                                    </label>
                                     <textarea 
                                         class="form-control" 
                                         id="questionInput" 
                                         name="question"
-                                        rows="3" 
-                                        placeholder="उदा: Airtel dongle मध्ये WPS म्हणजे काय आणि ते off ठेवणे सुरक्षित आहे का?"
+                                        rows="4" 
+                                        placeholder="तुमचा प्रश्न येथे टाइप करा... / Ask me anything in English or Marathi..."
                                         required
                                     ></textarea>
                                     <div class="form-text">
+                                        <i class="bi bi-info-circle me-1"></i>
                                         स्पष्ट आणि तपशीलवार प्रश्न विचारा. इंग्रजी किंवा मराठी दोन्ही भाषा वापरू शकता.
                                     </div>
                                 </div>
                                 
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
-                                        <i class="bi bi-search me-2"></i>
+                                        <i class="bi bi-rocket-takeoff me-2"></i>
                                         उत्तर शोधा
                                     </button>
                                 </div>
@@ -67,42 +412,65 @@
                     </div>
 
                     <!-- Loading State -->
-                    <div id="loadingSection" class="card shadow-sm mb-4" style="display: none;">
-                        <div class="card-body text-center p-5">
-                            <div class="spinner-border text-primary mb-3" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                    <div id="loadingSection" class="card shadow-sm mb-4 fade-in-up" style="display: none;">
+                        <div class="loading-card">
+                            <div class="loading-icon"></div>
+                            <h5 class="mb-3 text-gradient">उत्तर शोधत आहे...</h5>
+                            <p class="text-muted mb-0">
+                                <i class="bi bi-gear-fill me-2"></i>
+                                कृपया प्रतीक्षा करा. आम्ही वेबवर तुमच्या प्रश्नाचे उत्तर शोधत आहोत.
+                            </p>
+                            <div class="mt-3">
+                                <span class="badge bg-primary me-2">Searching Web</span>
+                                <span class="badge bg-success me-2">Processing Data</span>
+                                <span class="badge bg-info">Generating Answer</span>
                             </div>
-                            <h5 class="mb-2">उत्तर शोधत आहे...</h5>
-                            <p class="text-muted mb-0">कृपया प्रतीक्षा करा. आम्ही वेबवर तुमच्या प्रश्नाचे उत्तर शोधत आहोत.</p>
                         </div>
                     </div>
 
                     <!-- Answer Section -->
-                    <div id="answerSection" class="card shadow-sm" style="display: none;">
+                    <div id="answerSection" class="card shadow-sm fade-in-up" style="display: none;">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h3 class="card-title h5 mb-0">
-                                <i class="bi bi-lightbulb me-2"></i>
+                            <h3 class="card-title h5 mb-0 text-gradient">
+                                <i class="bi bi-lightbulb-fill me-2"></i>
                                 उत्तर
                             </h3>
-                            <div>
+                            <div class="btn-group">
                                 <button class="btn btn-outline-secondary btn-sm me-2" id="copyBtn" title="उत्तर कॉपी करा">
-                                    <i class="bi bi-clipboard"></i>
+                                    <i class="bi bi-clipboard-check"></i>
                                 </button>
                                 <button class="btn btn-outline-secondary btn-sm" id="newQuestionBtn" title="नवीन प्रश्न">
-                                    <i class="bi bi-arrow-clockwise"></i>
+                                    <i class="bi bi-arrow-repeat"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="alert alert-info" id="questionDisplay"></div>
-                            <div id="answerContent"></div>
+                            <div class="alert question-display" id="questionDisplay">
+                                <i class="bi bi-question-diamond me-2"></i>
+                                <strong>Your Question:</strong> <span id="questionText"></span>
+                            </div>
+                            <div id="answerContent">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-robot fs-4 text-primary me-3"></i>
+                                    <div>
+                                        <h6 class="mb-0 text-gradient">AI Generated Response</h6>
+                                        <small class="text-muted">Based on web search results</small>
+                                    </div>
+                                </div>
+                                <div id="answerText"></div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Error Section -->
-                    <div id="errorSection" class="alert alert-danger" style="display: none;">
-                        <i class="bi bi-exclamation-triangle me-2"></i>
-                        <span id="errorMessage"></span>
+                    <div id="errorSection" class="alert alert-danger fade-in-up" style="display: none;">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+                            <div>
+                                <h6 class="mb-1">Something went wrong!</h6>
+                                <span id="errorMessage"></span>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -111,14 +479,32 @@
 
         <!-- Footer -->
         <footer class="container mt-5 py-4 border-top">
-            <div class="text-center text-muted">
-                <p class="mb-2">
-                    <i class="bi bi-info-circle me-1"></i>
-                    हे उत्तरे वेब स्रोतांवरून स्वयंचलितपणे तयार केली जातात
-                </p>
-                <p class="mb-0">
-                    <small>DuckDuckGo सर्च • BeautifulSoup • NLTK द्वारे संचालित</small>
-                </p>
+            <div class="row">
+                <div class="col-12">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-shield-check text-success fs-5 me-2"></i>
+                            <span class="fw-semibold">Secure & Reliable</span>
+                        </div>
+                        <p class="mb-2">
+                            <i class="bi bi-info-circle me-2"></i>
+                            हे उत्तरे वेब स्रोतांवरून स्वयंचलितपणे तयार केली जातात
+                        </p>
+                        <!-- <div class="d-flex justify-content-center flex-wrap gap-3 mb-3">
+                            <span class="badge bg-primary">DuckDuckGo Search</span>
+                            <span class="badge bg-success">BeautifulSoup</span>
+                            <span class="badge bg-info">NLTK Processing</span>
+                            <span class="badge bg-warning">AI Enhanced</span>
+                        </div> -->
+                        <p class="mb-0">
+                            <small class="text-muted">
+                                Built with ❤️ for accurate and intelligent answers • 
+                                <a href="#" class="text-decoration-none">Privacy Policy</a> • 
+                                <a href="#" class="text-decoration-none">Terms of Service</a>
+                            </small>
+                        </p>
+                    </div>
+                </div>
             </div>
         </footer>
     </div>
