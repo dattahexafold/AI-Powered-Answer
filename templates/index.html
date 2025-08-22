@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="mr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>प्रश्न-उत्तर सेवा | Question-Answer System</title>
+    
+    <!-- Bootstrap CSS with Replit theme -->
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Header -->
+        <header class="py-4 mb-4 border-bottom">
+            <div class="container">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-search-heart fs-2 text-primary me-3"></i>
+                    <div>
+                        <h1 class="h3 mb-0">प्रश्न-उत्तर सेवा</h1>
+                        <p class="text-muted mb-0">वेब सर्चवर आधारित बुद्धिमान उत्तरे</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-xl-7">
+                    
+                    <!-- Question Input Section -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body p-4">
+                            <h2 class="card-title h5 mb-3">
+                                <i class="bi bi-question-circle me-2"></i>
+                                तुमचा प्रश्न विचारा
+                            </h2>
+                            
+                            <form id="questionForm">
+                                <div class="mb-3">
+                                    <label for="questionInput" class="form-label">प्रश्न:</label>
+                                    <textarea 
+                                        class="form-control" 
+                                        id="questionInput" 
+                                        name="question"
+                                        rows="3" 
+                                        placeholder="उदा: Airtel dongle मध्ये WPS म्हणजे काय आणि ते off ठेवणे सुरक्षित आहे का?"
+                                        required
+                                    ></textarea>
+                                    <div class="form-text">
+                                        स्पष्ट आणि तपशीलवार प्रश्न विचारा. इंग्रजी किंवा मराठी दोन्ही भाषा वापरू शकता.
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                                        <i class="bi bi-search me-2"></i>
+                                        उत्तर शोधा
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div id="loadingSection" class="card shadow-sm mb-4" style="display: none;">
+                        <div class="card-body text-center p-5">
+                            <div class="spinner-border text-primary mb-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <h5 class="mb-2">उत्तर शोधत आहे...</h5>
+                            <p class="text-muted mb-0">कृपया प्रतीक्षा करा. आम्ही वेबवर तुमच्या प्रश्नाचे उत्तर शोधत आहोत.</p>
+                        </div>
+                    </div>
+
+                    <!-- Answer Section -->
+                    <div id="answerSection" class="card shadow-sm" style="display: none;">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h3 class="card-title h5 mb-0">
+                                <i class="bi bi-lightbulb me-2"></i>
+                                उत्तर
+                            </h3>
+                            <div>
+                                <button class="btn btn-outline-secondary btn-sm me-2" id="copyBtn" title="उत्तर कॉपी करा">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm" id="newQuestionBtn" title="नवीन प्रश्न">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info" id="questionDisplay"></div>
+                            <div id="answerContent"></div>
+                        </div>
+                    </div>
+
+                    <!-- Error Section -->
+                    <div id="errorSection" class="alert alert-danger" style="display: none;">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <span id="errorMessage"></span>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="container mt-5 py-4 border-top">
+            <div class="text-center text-muted">
+                <p class="mb-2">
+                    <i class="bi bi-info-circle me-1"></i>
+                    हे उत्तरे वेब स्रोतांवरून स्वयंचलितपणे तयार केली जातात
+                </p>
+                <p class="mb-0">
+                    <small>DuckDuckGo सर्च • BeautifulSoup • NLTK द्वारे संचालित</small>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

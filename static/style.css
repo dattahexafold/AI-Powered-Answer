@@ -1,0 +1,114 @@
+/* Custom styles for the Question-Answer system */
+
+/* Enhanced search focus */
+#questionInput {
+    font-size: 1.1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+#questionInput:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+    transform: translateY(-2px);
+}
+
+/* Loading animation enhancements */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Answer content styling */
+#answerContent {
+    line-height: 1.7;
+}
+
+#answerContent h2 {
+    color: var(--bs-primary);
+    border-bottom: 2px solid var(--bs-primary);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+#answerContent p {
+    margin-bottom: 1rem;
+}
+
+/* Question display styling */
+#questionDisplay {
+    background-color: var(--bs-info-bg-subtle);
+    border-color: var(--bs-info-border-subtle);
+    color: var(--bs-info-text-emphasis);
+}
+
+/* Button hover effects */
+.btn {
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Card hover effects */
+.card {
+    transition: all 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Header styling */
+header {
+    background: linear-gradient(135deg, var(--bs-primary-bg-subtle), var(--bs-secondary-bg-subtle));
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem !important;
+    }
+    
+    #questionInput {
+        font-size: 1rem;
+    }
+}
+
+/* Custom scrollbar for answer content */
+#answerContent {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+#answerContent::-webkit-scrollbar {
+    width: 8px;
+}
+
+#answerContent::-webkit-scrollbar-track {
+    background: var(--bs-secondary-bg);
+    border-radius: 4px;
+}
+
+#answerContent::-webkit-scrollbar-thumb {
+    background: var(--bs-secondary);
+    border-radius: 4px;
+}
+
+#answerContent::-webkit-scrollbar-thumb:hover {
+    background: var(--bs-secondary-text);
+}
+
+/* Copy button success state */
+.btn-success-temp {
+    background-color: var(--bs-success) !important;
+    border-color: var(--bs-success) !important;
+    color: white !important;
+}
